@@ -75,7 +75,11 @@ public class SecurityConfig {
                         .contentTypeOptions(content -> {}))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                        .requestMatchers(
+                                "/actuator/health",
+                                "/actuator/health/**",
+                                "/actuator/info"
+                        ).permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/v1/events/stream").permitAll()
                         .requestMatchers("/api/v1/webhooks/events").permitAll()

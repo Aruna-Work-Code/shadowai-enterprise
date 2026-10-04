@@ -36,10 +36,11 @@ public class ExceptionExpiryService {
     /**
      * Runs periodically and marks expired approved exceptions.
      *
-     * The job intentionally runs every minute so that
-     * expiry is automatic without requiring a user action.
+     * The job runs every hour by default so that
+     * expiry remains automatic while reducing
+     * unnecessary database activity.
      */
-    @Scheduled(fixedRate = 60_000)
+    @Scheduled(fixedDelayString = "${app.jobs.exception-expiry-interval-ms:3600000}")
     public void expireApprovedExceptions() {
 
         Instant now = Instant.now();
