@@ -10,3 +10,10 @@ Full stack in one repo.
 Demo users (seeded by the backend on an empty database): `priya.employee`, `aruna.it`, `neha.manager`, password `Demo@123`.
 
 ## Deploy for free: see DEPLOY.md
+
+
+
+
+--------------------
+For more details to know how to deploy using the free tier:
+https://drive.google.com/file/d/1C_6C90-V-5wn5CayKbySQ8z7qGYcnU1S/view?usp=drive_link
