@@ -1,0 +1,161 @@
+/* =========================================================
+   ShadowAI: workspace polish layer (app shell, all pages)
+   Loaded AFTER workspace.css. Additive; presentation only.
+   ========================================================= */
+
+/* ---- Foundations / cross-browser ---- */
+.ws{--ease:cubic-bezier(.22,.8,.3,1);min-height:100vh;min-height:100dvh;-webkit-text-size-adjust:100%;text-size-adjust:100%;-moz-osx-font-smoothing:grayscale}
+@supports(overflow:clip){.ws{overflow-x:clip}}
+.ws .app{min-height:100vh;min-height:100dvh}
+.ws .sidebar{height:100vh;height:100dvh;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.ws .topbar,.ws .modal-ov,.ws .overlay{-webkit-backdrop-filter:blur(16px)}
+.ws .app-content{width:100%;margin-left:auto;margin-right:auto;padding-bottom:max(28px,env(safe-area-inset-bottom))}
+.ws img,.ws svg,.ws canvas,.ws video{max-width:100%}
+.ws input,.ws select,.ws textarea{max-width:100%;font-family:inherit}
+.ws :focus-visible{outline:2px solid var(--indigo);outline-offset:2px;border-radius:6px}
+.ws button,.ws a,.ws input,.ws select,.ws textarea{-webkit-tap-highlight-color:transparent}
+.ws ::selection{background:rgba(99,102,241,.25)}
+.ws .topbar-text{min-width:0;flex:1 1 auto}
+.ws .topbar-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ws .topbar-right{flex:none;flex-wrap:nowrap}
+.ws .menu-btn,.ws .sb-close,.ws .nav-scrim{display:none}
+
+/* ---- Calm motion: smoother page transitions & micro-interactions ---- */
+.ws .app-content{animation:ws-enter .45s var(--ease) both}
+@keyframes ws-enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.ws .nav-item,.ws .btn-p,.ws .btn-o,.ws .refresh-btn,.ws .theme-btn,.ws .chip,.ws .stat-card{transition:transform .22s var(--ease),box-shadow .22s var(--ease),background-color .2s,border-color .2s,color .2s}
+.ws .nav-item:hover{transform:translateX(2px)}
+.ws .btn-p:active,.ws .btn-o:active,.ws .refresh-btn:active,.ws .theme-btn:active{transform:scale(.97)}
+.ws .stat-card:hover{transform:translateY(-3px)}
+.ws .tcard,.ws .dt tbody tr{transition:background-color .2s}
+.ws .dt tbody tr:hover{background:var(--indigo-faint)}
+.ws .refresh-btn.refreshing{opacity:.8}
+.ws .toast{animation:ws-toast .35s var(--ease) both}
+@keyframes ws-toast{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.ws .btn-p,.ws .btn-o,.ws .refresh-btn,.ws .nav-item,.ws .chip{min-height:36px}
+.ws input,.ws select,.ws textarea{transition:border-color .2s,box-shadow .2s}
+.ws input:focus,.ws select:focus,.ws textarea:focus{border-color:var(--indigo);box-shadow:0 0 0 4px var(--indigo-faint);outline:none}
+
+/* ---- Navigation drawer + hamburger (mobile) ---- */
+.ws .menu-btn{width:42px;height:42px;flex:none;border-radius:12px;background:var(--light-card);border:1px solid var(--light-border2);align-items:center;justify-content:center;flex-direction:column;gap:4px;padding:0}
+.ws .menu-btn span{display:block;width:18px;height:2px;border-radius:2px;background:var(--light-text)}
+.ws .sb-close{margin-left:auto;width:36px;height:36px;border-radius:10px;color:rgba(255,255,255,.7);font-size:26px;line-height:1;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.1)}
+.ws .sb-close:hover{background:rgba(255,255,255,.08);color:#fff}
+
+@media(max-width:768px){
+  .ws .menu-btn{display:flex}
+  .ws .sidebar{display:flex!important;width:min(300px,86vw);transform:translateX(-104%);visibility:hidden;transition:transform .32s var(--ease),visibility 0s .32s;box-shadow:none;z-index:70;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+  .ws .sidebar.open{transform:none;visibility:visible;transition-delay:0s;box-shadow:0 0 60px rgba(0,0,0,.5)}
+  .ws .sb-close{display:flex}
+  .ws .nav-scrim{display:block;position:fixed;inset:0;z-index:60;background:rgba(5,8,18,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:opacity .3s var(--ease),visibility 0s .3s}
+  .ws .nav-scrim.show{opacity:1;visibility:visible;transition-delay:0s}
+  .ws .nav-item{min-height:44px}
+  .ws .topbar{gap:10px;padding-top:env(safe-area-inset-top);height:calc(var(--topbar-h) + env(safe-area-inset-top))}
+  .ws .topbar-eye{display:none}
+  .ws .topbar-title{font-size:18px}
+  .ws .topbar-right{gap:8px}
+  .ws .api-pill{font-size:0;gap:0;padding:0;width:34px;height:34px;justify-content:center}
+  .ws .api-pill .api-dot{margin:0}
+  .ws .topbar-demo{display:none}
+  .ws .refresh-btn{font-size:0;gap:0;width:34px;height:34px;padding:0;justify-content:center}
+  .ws .refresh-btn::before{content:"\21BB";font-size:16px;line-height:1}
+  .ws .refresh-btn.refreshing::before{animation:ws-spin .8s linear infinite;display:inline-block}
+  .ws .toast{left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));max-width:none}
+  /* Data tables scroll sideways instead of breaking the layout */
+  .ws .dt{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .ws .tcard,.ws .card{max-width:100%}
+  .ws .toolbar{flex-wrap:wrap;gap:10px}
+  .ws .search{min-width:0;width:100%;flex:1 1 100%}
+  .ws .page{gap:16px}
+  .ws input,.ws select,.ws textarea{font-size:16px} /* stop iOS zoom on focus */
+}
+@keyframes ws-spin{to{transform:rotate(360deg)}}
+
+@media(max-width:480px){
+  .ws .app-content{padding:14px 12px calc(20px + env(safe-area-inset-bottom))}
+  .ws .topbar{padding-left:12px;padding-right:12px}
+  .ws .modal{max-height:92vh;max-height:92dvh;overflow:auto}
+  .ws .stats-g{gap:10px}
+  .ws .btn-p,.ws .btn-o{width:auto}
+  .ws .guide-hero{padding:22px}
+}
+@media(max-width:360px){.ws .topbar-title{font-size:16px}.ws .stats-g{grid-template-columns:1fr}}
+
+/* ---- Tablets (portrait iPad etc.) ---- */
+@media(min-width:769px) and (max-width:1024px){.ws .api-pill{font-size:11px;padding:5px 10px}.ws .topbar-sub{display:none}}
+
+/* ---- Large / ultra-wide displays ---- */
+@media(min-width:1600px){.ws .app-content{max-width:1560px;padding-left:44px;padding-right:44px}.ws{font-size:15px}}
+@media(min-width:2200px){.ws .app-content{max-width:1880px}}
+
+/* ---- Landscape phones ---- */
+@media(max-height:480px) and (orientation:landscape){.ws .topbar{position:static}.ws .modal{max-height:96vh;overflow:auto}}
+
+/* ---- Touch: remove sticky hovers ---- */
+@media(hover:none){.ws .stat-card:hover,.ws .nav-item:hover{transform:none}}
+
+/* ---- Accessibility ---- */
+@media(prefers-reduced-motion:reduce){.ws *,.ws *::before,.ws *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+@media(forced-colors:active){.ws .nav-on{outline:2px solid Highlight}.ws .btn-p{border:1px solid ButtonText}}
+@media print{.ws .sidebar,.ws .topbar,.ws .nav-scrim,.ws .toast{display:none!important}.ws .app-main{margin-left:0}}
+
+/* =========================================================
+   Overflow & mobile-scroll hardening (v3)
+   Root cause of "cannot scroll sideways": flex/grid children kept
+   min-width:auto, so wide tables/pipelines stretched the page and
+   were then clipped by overflow-x:clip. Fix: let every layout box
+   shrink, and give wide content its own scroll container.
+   ========================================================= */
+.ws .app-main,.ws .app-content,.ws .page,.ws .card,.ws .panel,.ws .tcard,.ws .inv-detail,.ws .inv-list,.ws .form-card,.ws .wizard,.ws .disc-result{min-width:0;max-width:100%}
+.ws .page>*,.ws .inv-layout>*,.ws .dash-top>*,.ws .dash-mid>*,.ws .cc>*,.ws .guide-hero>*,.ws .stats-g>*,.ws .tools-grid>*,.ws .frow3>*,.ws .inv-meta>*{min-width:0}
+.ws .inv-layout{grid-template-columns:minmax(0,280px) minmax(0,1fr)}
+.ws .dash-top{grid-template-columns:minmax(0,320px) minmax(0,1fr)}
+.ws .dash-mid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.ws .frow3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.ws .tools-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr))}
+.ws .tcard{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:thin}
+.ws .tcard>.dt,.ws .dt{width:100%;min-width:640px;display:table}
+.ws :not(.tcard)>table.dt{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ws .dt td,.ws .dt th{vertical-align:middle}
+.ws .dt .act-btns{flex-wrap:nowrap;white-space:nowrap}
+.ws .td-main{min-width:200px;overflow-wrap:anywhere}
+.ws .inv-desc,.ws .tc-name,.ws .tc-meta,.ws .inv-item-name,.ws .audit-ev,.ws .pol-main,.ws .topbar-sub,.ws .form-sub,.ws .hint{overflow-wrap:anywhere}
+.ws .pipeline{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scroll-snap-type:x proximity}
+.ws .pip-step{scroll-snap-align:center}
+.ws .pip-name{font-size:9px}
+.ws .fg[style]{max-width:100%}
+.ws .wizard,.ws .form-card,.ws .disc-result{width:100%}
+.ws .filters{max-width:100%}
+.ws .toolbar>*{min-width:0}
+.ws .act-btns button,.ws .tab,.ws .filter-btn{min-height:36px}
+.ws .tabs{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;white-space:nowrap}
+.ws .tabs::-webkit-scrollbar{display:none}
+.ws .tab{flex:none}
+
+@media(max-width:1024px){
+  .ws .inv-layout,.ws .dash-top{grid-template-columns:minmax(0,1fr)}
+  .ws .stats-g{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .ws .dash-mid,.ws .frow3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ws .inv-layout{min-height:0}
+}
+@media(max-width:768px){
+  .ws .dash-mid,.ws .frow3,.ws .guide-hero{grid-template-columns:minmax(0,1fr)}
+  .ws .stats-g,.ws .inv-meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ws .tcard>.dt,.ws .dt{display:table;min-width:640px}
+  .ws :not(.tcard)>table.dt{display:block}
+  .ws .inv-detail,.ws .form-card,.ws .wizard,.ws .disc-result{padding:18px}
+  .ws .inv-dhead{flex-wrap:wrap;gap:10px}
+  .ws .inv-list{max-height:none}
+  .ws .fact{flex-wrap:wrap}
+  .ws .fact>button{flex:1 1 140px}
+  .ws .gform .fg[style]{width:100%!important}
+  .ws .dt thead th,.ws .dt td{padding-left:12px;padding-right:12px}
+}
+@media(max-width:480px){
+  .ws .stats-g{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ws .inv-meta{grid-template-columns:minmax(0,1fr)}
+  .ws .tools-grid{grid-template-columns:minmax(0,1fr)}
+  .ws .wiz-steps{padding-bottom:6px}
+  .ws .dr-rows{gap:10px}
+}
+@media(max-width:340px){.ws .stats-g{grid-template-columns:minmax(0,1fr)}.ws .app-content{padding-left:10px;padding-right:10px}}
